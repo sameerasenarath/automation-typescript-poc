@@ -1,4 +1,7 @@
 import { Locator, Page } from '@playwright/test';
+import GradeSelectionPage from './GradeSelectionPage';
+import { POManager } from './POManager';
+import SelectPremiumServicePage from './SelectPremiumServicePage';
 
 export class CheckOutUserStateSelectionPage {
     private countryGroup: Locator;
@@ -7,7 +10,8 @@ export class CheckOutUserStateSelectionPage {
     private nextButton: Locator;
     private page: Page;
 
-    constructor(page: Page) {
+
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
         this.countryGroup = page.locator("div[data-tracking-id='StateContainer.Button.countryButtonGroup']");
         this.countryAustraliaButton = page.locator("button[data-tracking-id='StateContainer.Button.countryAU']");
@@ -33,8 +37,19 @@ export class CheckOutUserStateSelectionPage {
         return this;
     }
 
-    async clickNextButton(){
+    // Overload signatures
+    async clickNextButton(): Promise<GradeSelectionPage>;
+    async clickNextButton(isAddServiceFlow: boolean): Promise<GradeSelectionPage | SelectPremiumServicePage>;
+
+    // Single implementation handling both overloads
+    async clickNextButton(isAddServiceFlow: boolean = false): Promise<GradeSelectionPage | SelectPremiumServicePage> {
         await this.nextButton.click();
+
+        if (isAddServiceFlow) {
+            return new SelectPremiumServicePage(this.page,this.poManager);
+        } else {
+            return new GradeSelectionPage(this.page, this.poManager);
+        }
     }
 }
 

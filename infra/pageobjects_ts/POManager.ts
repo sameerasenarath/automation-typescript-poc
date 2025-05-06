@@ -17,16 +17,19 @@ export class POManager {
     paymentPage: PaymentPage;
     paymentSuccessPage: paymentSuccessPage;
     enrolmentHomePage: enrolmentHomePage;
+    selectPremiumServicePage: selectPremiumServicePage;
 
     constructor(page: Page) {
         this.page = page;
-        this.checkOutParentDetailsPage = new CheckOutParentDetailsPage(this.page);
-        this.gradeSelectionPage = new GradeSelectionPage(this.page);
-        this.checkOutUserStateSelectionPage = new CheckOutUserStateSelectionPage(this.page);
-        this.membershipSelectionPage = new MembershipSelectionPage(this.page);
-        this.paymentPage = new PaymentPage(this.page);
-        this.paymentSuccessPage = new paymentSuccessPage(this.page);
+        this.checkOutUserStateSelectionPage = new CheckOutUserStateSelectionPage(this.page, this);
+        this.checkOutParentDetailsPage = new CheckOutParentDetailsPage(this.page, this);
+        this.gradeSelectionPage = new GradeSelectionPage(this.page, this);
+        this.membershipSelectionPage = new MembershipSelectionPage(this.page, this);
+        this.paymentPage = new PaymentPage(this.page, this);
+        this.paymentSuccessPage = new paymentSuccessPage(this.page, this);
         this.enrolmentHomePage = new enrolmentHomePage(this.page);
+        this.selectPremiumServicePage = new selectPremiumServicePage(this.page,this);
+    
     }
 
     getCheckOutParentDetailsPage() {
@@ -46,7 +49,7 @@ export class POManager {
     }
 
     getSelectPremiumServicePage() {
-        return new selectPremiumServicePage(this.page);
+        return this.selectPremiumServicePage;
     }
 
     getPaymentPage() {

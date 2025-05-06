@@ -1,5 +1,6 @@
 import {test, expect,Locator,Page} from '@playwright/test';
 import { CheckOutUserStateSelectionPage } from './CheckOutUserStateSelectionPage';
+import { POManager } from './POManager';
 
 
 export class CheckOutParentDetailsPage {
@@ -12,7 +13,7 @@ export class CheckOutParentDetailsPage {
     confirmLocaleButton : Locator;
     page : Page;
 
-constructor(page:Page)
+constructor(page:Page, private poManager: POManager)
 {
     this.page = page;
     this.parentFirstNameInput= page.locator("input[id='firstName']");
@@ -48,7 +49,7 @@ async selectNewsletterSubscription()
 
 async clickNextButton(): Promise<CheckOutUserStateSelectionPage> {
     await this.nextButton.click();
-    return new CheckOutUserStateSelectionPage(this.page);
+    return this.poManager.getCheckOutUserStateSelectionPage();
   }
 
 async clickOnLocaleSelector()

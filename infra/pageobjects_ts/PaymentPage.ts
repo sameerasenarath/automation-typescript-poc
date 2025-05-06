@@ -1,5 +1,7 @@
 import {FrameLocator, Locator, Page} from '@playwright/test';
 import { GradeSelectorPortalMap } from '../eukaObjectsFactory/GradeSelectorPortal'; // Assuming GradeSelectorPortal is defined elsewhere
+import { POManager } from './POManager';
+import PaymentSuccessPage from './PaymentSuccessPage';
 //import { LocaleSlug, EukaCountryState, UserCheckoutFlows } from './config'; // Assuming these are defined elsewhere
 //import { PaymentSuccessPage } from './PaymentSuccessPage'; // Assuming these pages are defined elsewhere
 // import { ParentPortalParentDashboardPage } from './ParentPortalParentDashboardPage';
@@ -38,7 +40,7 @@ export class PaymentPage {
     private discountedAmountElement: Locator;
     private instalmentWarningMessageElement: Locator;
 
-    constructor(page: Page) {
+    constructor(page: Page, private ppoManager: POManager) { // Assuming POManager is defined elsewhere
         this.page = page;
 
         // Initialize locators using CSS selectors
@@ -181,10 +183,11 @@ export class PaymentPage {
         return this;
     }
 
-    async clickPayButton(): Promise<any> {
+    async clickPayButton(): Promise<PaymentSuccessPage> {
         await this.page.waitForTimeout(2000); // Wait for 2 seconds to apply the coupon
         await this.payButton.click();
         await this.payButton.waitFor({ state: 'hidden', timeout: 90000 });
+        return this.ppoManager.getPaymentSuccessPage();
     }
 
     async selectExistingCard(): Promise<this> {

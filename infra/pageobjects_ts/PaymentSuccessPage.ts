@@ -1,11 +1,12 @@
 import { Page } from '@playwright/test';// Adjust the import path as needed
+import { POManager } from './POManager';
 
 export class PaymentSuccessPage {
     // CSS selector for the header text
     private static readonly headerText = '#thank-you h4:nth-of-type(1)';
     private page: Page;
 
-    constructor(page: Page) {
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
     }
 

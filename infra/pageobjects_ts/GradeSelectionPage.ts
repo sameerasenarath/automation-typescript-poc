@@ -1,10 +1,12 @@
 import { Locator, Page } from '@playwright/test';
+import { POManager } from './POManager';
+import MembershipSelectionPage from './MembershipSelectionPage';
 
 export class GradeSelectionPage {
     private nextButton: Locator;
     private page: Page;
 
-    constructor(page: Page) {
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
         this.nextButton = page.locator("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
     }
@@ -18,8 +20,9 @@ export class GradeSelectionPage {
         return this;
     }
 
-    async clickNextButton(){
+    async clickNextButton(): Promise<MembershipSelectionPage> {
         await this.nextButton.click();
+        return this.poManager.getMembershipSelectionPage();
     }
 }
 
