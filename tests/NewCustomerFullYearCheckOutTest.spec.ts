@@ -35,6 +35,7 @@ test.afterAll(async ({}, testInfo) => {
 
 test(`newUserCheckoutFlowTest`, async ({}) => {
     page = await webContext.newPage();
+    let checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage();
 
     await test.step("Run Tests in Full screen Mode", async () => {
         const viewportSize = await page.evaluate(() => ({width: window.innerWidth, height: window.innerHeight}));
@@ -48,17 +49,19 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
     })
 
     await test.step("Fill Parent details and Navigate to country and state selection page", async () => {
-        const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage()
+        const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage();
         await checkOutParentDetailsPage.goTo();
         await checkOutParentDetailsPage.fillParentFirstName(data[0].parentFirstName);
         parentEmail = data[0].parentEmail.replace('%s', generateRandomString(4));
         await checkOutParentDetailsPage.fillParentEmail(parentEmail);
         await checkOutParentDetailsPage.selectNewsletterSubscription();
-        await checkOutParentDetailsPage.clickNextButton();
-    })
+        checkOutUserStateSelectionPage = await checkOutParentDetailsPage.clickNextButton();
+    });
+
+    
 
     await test.step("Select country and state and navigate to Grade selection page", async () => {
-        const checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage()
+        //const checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage()
         await checkOutUserStateSelectionPage.selectCountry("AU");
         await checkOutUserStateSelectionPage.selectState("NSW");
         await checkOutUserStateSelectionPage.clickNextButton();
