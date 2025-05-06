@@ -1,14 +1,14 @@
 import {test, expect, BrowserContext, chromium, Page} from '@playwright/test';
-import {customTest} from '../utils_ts/test-base';
 
-import {POManager} from '../pageobjects_ts/POManager';
-import generateRandomString from "../functions/generateRandomString";
-import {GradeSelectorPortalMap} from "../eukaObjectsFactory/GradeSelectorPortal";
-import {Mail} from "../functions/Mail";
-import {ExtractEmails} from "../functions/ExtractEmails";
+import {POManager} from '../infra/pageobjects_ts/POManager';
+import generateRandomString from "../infra/functions/generateRandomString";
+import {GradeSelectorPortalMap} from "../infra/eukaObjectsFactory/GradeSelectorPortal";
+import {Mail} from "../infra/functions/Mail";
+import {ExtractEmails} from "../infra/functions/ExtractEmails";
+import CheckOutUserStateSelectionPage from "../infra/pageobjects_ts/CheckOutUserStateSelectionPage";
 
 //Json->string->js object
-const data = JSON.parse(JSON.stringify(require("../utils/newCustomerFullYearCheckOutTestData.json")));
+const data = JSON.parse(JSON.stringify(require("../utils/testData/newCustomerFullYearCheckOutTestData.json")));
 let webContext: BrowserContext;
 let poManager: POManager;
 let parentEmail: string;
@@ -16,7 +16,7 @@ let page : Page;
 
 test.beforeAll(async ({browser}) => {
     webContext = await browser.newContext({
-        storageState: './utils/sessionInfo.json',
+        storageState: './utils/sessionCookies/sessionInfo.json',
         recordVideo: { dir: 'videos/' }
     });
 })
@@ -35,8 +35,7 @@ test.afterAll(async ({}, testInfo) => {
 
 test(`newUserCheckoutFlowTest`, async ({}) => {
     page = await webContext.newPage();
-    let checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage();
-
+    let checkOutUserStateSelectionPage: CheckOutUserStateSelectionPage;
     await test.step("Run Tests in Full screen Mode", async () => {
         const viewportSize = await page.evaluate(() => ({width: window.innerWidth, height: window.innerHeight}));
         await page.setViewportSize(viewportSize);
@@ -49,6 +48,7 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
     })
 
     await test.step("Fill Parent details and Navigate to country and state selection page", async () => {
+        checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage();
         const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage();
         await checkOutParentDetailsPage.goTo();
         await checkOutParentDetailsPage.fillParentFirstName(data[0].parentFirstName);
