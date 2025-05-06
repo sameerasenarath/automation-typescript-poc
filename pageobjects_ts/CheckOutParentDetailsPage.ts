@@ -1,4 +1,5 @@
 import {test, expect,Locator,Page} from '@playwright/test';
+import { CheckOutUserStateSelectionPage } from './CheckOutUserStateSelectionPage';
 
 
 export class CheckOutParentDetailsPage {
@@ -45,10 +46,10 @@ async selectNewsletterSubscription()
     await this.newsletterSubscriptionInput.click();
 }
 
-async clickNextButton()
-{
+async clickNextButton(): Promise<CheckOutUserStateSelectionPage> {
     await this.nextButton.click();
-}
+    return new CheckOutUserStateSelectionPage(this.page);
+  }
 
 async clickOnLocaleSelector()
 {
