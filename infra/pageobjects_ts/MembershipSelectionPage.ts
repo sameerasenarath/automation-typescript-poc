@@ -1,17 +1,19 @@
-import { Locator, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { WebActions } from '../functions/WebActions';// Adjust the path if needed
 
 export class MembershipSelectionPage {
-    private nextButton: Locator;
     private page: Page;
+    private webActions: WebActions;
 
     constructor(page: Page) {
         this.page = page;
-        this.nextButton = page.locator("button[data-tracking-id='MembershipContainer.Button.goNextFromPlanSelectPage']");
+        this.webActions = new WebActions(page);
     }
 
-    async clickNextButton(){
-        await this.nextButton.waitFor({state: 'visible'});
-        await this.nextButton.click();
+    async clickNextButton() {
+        const nextButtonSelector = "button[data-tracking-id='MembershipContainer.Button.goNextFromPlanSelectPage']";
+        await this.webActions.waitForSelector(nextButtonSelector);
+        await this.webActions.click(nextButtonSelector);
     }
 }
 

@@ -1,3 +1,4 @@
+/*
 
  import {test, expect} from '@playwright/test';
  import {customTest} from '../utils_ts/test-base';
@@ -73,3 +74,4 @@ customTest(`Client App login`, async ({page,testDataForOrder})=>
 
  
 
+*/

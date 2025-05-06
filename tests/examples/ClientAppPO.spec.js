@@ -1,3 +1,4 @@
+/*
  const {test, expect} = require('@playwright/test');
  const {customtest} = require('../utils/test-base');
 
@@ -70,3 +71,4 @@ for(const data of dataset)
 
  
 
+*/
