@@ -1,4 +1,4 @@
-import config from '../utils/MainConfig.json';
+import config from '../../utils/config/MainConfig.json';
 
 class Parent {
     parentID: string;
