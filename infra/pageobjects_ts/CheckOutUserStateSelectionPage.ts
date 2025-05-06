@@ -1,11 +1,15 @@
-import { Page } from '@playwright/test';
-import { WebActions } from '../functions/WebActions'; // Adjust path as needed
+import { Locator, Page } from '@playwright/test';
+import GradeSelectionPage from './GradeSelectionPage';
+import { POManager } from './POManager';
+import SelectPremiumServicePage from './SelectPremiumServicePage';
+import { WebActions } from '../functions/WebActions'; 
 
 export class CheckOutUserStateSelectionPage {
     private page: Page;
     private webActions: WebActions;
 
-    constructor(page: Page) {
+
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
         this.webActions = new WebActions(page);
     }
@@ -27,8 +31,19 @@ export class CheckOutUserStateSelectionPage {
         return this;
     }
 
-    async clickNextButton() {
+    // Overload signatures
+    async clickNextButton(): Promise<GradeSelectionPage>;
+    async clickNextButton(isAddServiceFlow: boolean): Promise<GradeSelectionPage | SelectPremiumServicePage>;
+
+    // Single implementation handling both overloads
+    async clickNextButton(isAddServiceFlow: boolean = false): Promise<GradeSelectionPage | SelectPremiumServicePage> {
         await this.webActions.click("button[data-tracking-id='StateContainer.Button.goNextFromStateSelectPage']");
+
+        if (isAddServiceFlow) {
+            return new SelectPremiumServicePage(this.page,this.poManager);
+        } else {
+            return new GradeSelectionPage(this.page, this.poManager);
+        }
     }
 }
 

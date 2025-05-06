@@ -6,6 +6,11 @@ import {GradeSelectorPortalMap} from "../infra/eukaObjectsFactory/GradeSelectorP
 import {Mail} from "../infra/functions/Mail";
 import {ExtractEmails} from "../infra/functions/ExtractEmails";
 import CheckOutUserStateSelectionPage from "../infra/pageobjects_ts/CheckOutUserStateSelectionPage";
+import GradeSelectionPage from '../infra/pageobjects_ts/GradeSelectionPage';
+import MembershipSelectionPage from '../infra/pageobjects_ts/MembershipSelectionPage';
+import SelectPremiumServicePage from '../infra/pageobjects_ts/SelectPremiumServicePage';
+import PaymentPage from '../infra/pageobjects_ts/PaymentPage';
+import PaymentSuccessPage from '../infra/pageobjects_ts/PaymentSuccessPage';
 
 //Json->string->js object
 const data = JSON.parse(JSON.stringify(require("../utils/testData/newCustomerFullYearCheckOutTestData.json")));
@@ -36,6 +41,12 @@ test.afterAll(async ({}, testInfo) => {
 test(`newUserCheckoutFlowTest`, async ({}) => {
     page = await webContext.newPage();
     let checkOutUserStateSelectionPage: CheckOutUserStateSelectionPage;
+    let gradeSelectionPage: GradeSelectionPage;
+    let membershipSelectionPage: MembershipSelectionPage;
+    let selectPremiumServicePage: SelectPremiumServicePage;
+    let paymentPage: PaymentPage;
+    let paymentSuccessPage: PaymentSuccessPage;
+
     await test.step("Run Tests in Full screen Mode", async () => {
         const viewportSize = await page.evaluate(() => ({width: window.innerWidth, height: window.innerHeight}));
         await page.setViewportSize(viewportSize);
@@ -48,7 +59,6 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
     })
 
     await test.step("Fill Parent details and Navigate to country and state selection page", async () => {
-        checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage();
         const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage();
         await checkOutParentDetailsPage.goTo();
         await checkOutParentDetailsPage.fillParentFirstName(data[0].parentFirstName);
@@ -62,31 +72,25 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
     
 
     await test.step("Select country and state and navigate to Grade selection page", async () => {
-        //const checkOutUserStateSelectionPage = poManager.getCheckOutUserStateSelectionPage()
         await checkOutUserStateSelectionPage.selectCountry("AU");
         await checkOutUserStateSelectionPage.selectState("NSW");
-        await checkOutUserStateSelectionPage.clickNextButton();
-
+        gradeSelectionPage = await checkOutUserStateSelectionPage.clickNextButton();
     })
 
     await test.step("Select Grade and navigate to membership selection page", async () => {
-        const gradeSelectionPage = poManager.getGradeSelectionPage();
         await gradeSelectionPage.selectGrade(GradeSelectorPortalMap.GRADE_1);
-        await gradeSelectionPage.clickNextButton();
+        membershipSelectionPage = await gradeSelectionPage.clickNextButton();
 
     })
 
     await test.step("Select payment plan and navigate to premium service selection page", async () => {
-        const membershipSelectionPage = poManager.getMembershipSelectionPage();
-        await membershipSelectionPage.clickNextButton();
+        selectPremiumServicePage = await membershipSelectionPage.clickNextButton();
     })
 
     await test.step("Select premium services and navigate to payment page", async () => {
-        const premiumServiceSelectionPage = poManager.getSelectPremiumServicePage();
-        await premiumServiceSelectionPage.clickNextButton();
+        paymentPage = await selectPremiumServicePage.clickNextButton();
     });
     await test.step("Fill payment details and navigate to review page", async () => {
-        const paymentPage = poManager.getPaymentPage();
         await paymentPage.enterCCNumber("4111 1111 1111 1111")
         await paymentPage.enterCCExpiry("01/29")
         await paymentPage.enterCCCVC("456")
@@ -100,11 +104,10 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
         await paymentPage.selectCountryCode()
         await paymentPage.enterPhoneNumber("0707070707")
         await paymentPage.checkTerms()
-        await paymentPage.clickPayButton()
+        paymentSuccessPage = await paymentPage.clickPayButton()
     })
 
     await test.step("Verify payment success page", async () => {
-        const paymentSuccessPage = poManager.getPaymentSuccessPage();
         const parentEmailVisible = await paymentSuccessPage.isParentEmailVisible(parentEmail, page);
         console.log("Is Parent Email Visible in payemt success Page: ", parentEmailVisible);
         await expect(parentEmailVisible).toBeTruthy();
@@ -117,7 +120,6 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
             console.log("URL ::: >>> "+URL);
             const enrolmentHomePage = poManager.getEnrolmentHomePage();
             await enrolmentHomePage.goTo(URL)
-
 
         })
 

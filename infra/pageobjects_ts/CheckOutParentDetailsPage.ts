@@ -1,5 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { CheckOutUserStateSelectionPage } from './CheckOutUserStateSelectionPage';
+import { POManager } from './POManager';
+
 import { WebActions } from '../functions/WebActions'; // Adjust the path as needed
 const config = require("../../utils/config/MainConfig.json");
 
@@ -14,17 +16,17 @@ export class CheckOutParentDetailsPage {
     private page: Page;
     private webActions: WebActions;
 
-    constructor(page: Page) {
-        this.page = page;
-        this.webActions = new WebActions(page);
-
-        this.parentFirstNameInput = page.locator("input[id='firstName']");
-        this.parentEmailInput = page.locator("input[id='email']");
-        this.newsletterSubscriptionInput = page.locator("label[data-tracking-id='UserInfoContainer.Checkbox.checkNewsletterSubscription']>span:nth-of-type(1)");
-        this.nextButton = page.locator("button[data-tracking-id='UserInfoContainer.Button.goNext']");
-        this.localeSelector = page.locator("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal']/p[2]");
-        this.changeLanguageDropdown = page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
-        this.confirmLocaleButton = page.locator("button[data-tracking-id='LocationSelectDrawer.Button.confirm']");
+constructor(page:Page, private poManager: POManager)
+{
+    this.page = page;
+    this.webActions = new WebActions(page);
+    this.parentFirstNameInput= page.locator("input[id='firstName']");
+    this.parentEmailInput = page.locator("input[id='email']");
+    this.newsletterSubscriptionInput = page.locator("label[data-tracking-id='UserInfoContainer.Checkbox.checkNewsletterSubscription']>span:nth-of-type(1)");
+    this.nextButton= page.locator("button[data-tracking-id='UserInfoContainer.Button.goNext']");
+    this.localeSelector = page.locator("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal']/p[2]");
+    this.changeLanguageDropdown= page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
+    this.confirmLocaleButton = page.locator("button[data-tracking-id='LocationSelectDrawer.Button.confirm']");
     }
 
     async goTo() {
@@ -45,7 +47,7 @@ export class CheckOutParentDetailsPage {
 
     async clickNextButton(): Promise<CheckOutUserStateSelectionPage> {
         await this.webActions.click("button[data-tracking-id='UserInfoContainer.Button.goNext']");
-        return new CheckOutUserStateSelectionPage(this.page);
+        return this.poManager.getCheckOutUserStateSelectionPage();
     }
 
     async clickOnLocaleSelector() {
@@ -62,5 +64,4 @@ export class CheckOutParentDetailsPage {
         await this.webActions.click("button[data-tracking-id='LocationSelectDrawer.Button.confirm']");
     }
 }
-
-
+module.exports = {CheckOutParentDetailsPage};

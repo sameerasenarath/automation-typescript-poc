@@ -46,6 +46,10 @@ const config = {
       name: 'sanity-tests',
       testMatch: ['tests/sanity/*.spec.ts'], // Run only sanity test files
     },
+    {
+      name: 'data-prep-tests',
+      testMatch: ['tests/dataPreparation/**/*.spec.ts'],
+    }
   ],
 
 

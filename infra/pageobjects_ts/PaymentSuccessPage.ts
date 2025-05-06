@@ -1,7 +1,6 @@
-import { Page } from '@playwright/test';
+import { Page } from '@playwright/test';// Adjust the import path as needed
+import { POManager } from './POManager';
 import {WebActions} from "../functions/WebActions";
-
-// Adjust the import path as needed
 
 export class PaymentSuccessPage {
     // CSS selector for the header text
@@ -9,7 +8,7 @@ export class PaymentSuccessPage {
     private page: Page;
     private webActions: WebActions;
 
-    constructor(page: Page) {
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
         this.webActions = new WebActions(page);
     }
