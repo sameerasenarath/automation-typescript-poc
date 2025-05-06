@@ -117,7 +117,6 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
             const enrolmentHomePage = poManager.getEnrolmentHomePage();
             await enrolmentHomePage.goTo(URL)
 
-
         })
 
 
