@@ -27,7 +27,7 @@ constructor(page:Page)
 
 async goTo()
 {
-    await this.page.goto("https://portal.euka.edu.au/checkout?selectedCountry=AU");
+    await this.page.goto("https://portal.rc.euka.edu.au/checkout?selectedCountry=AU");
     //await this.page.waitForLoadState('networkidle');
 }
 
