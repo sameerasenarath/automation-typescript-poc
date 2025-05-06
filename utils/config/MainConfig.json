@@ -5,6 +5,7 @@
         "ecomSiteUrl": "https://ecom.staging.euka.edu.au/",
         "lmsUrl": "https://learn.staging.euka.edu.au/",
         "portalUrl": "https://portal.rc.euka.edu.au/",
+        "portalCheckoutUrl": "https://portal.rc.euka.edu.au/checkout?selectedCountry=AU",
         "headless": false,
         "locale": "AUSTRALIA",
         "isRunRemotely": false,

@@ -1,25 +1,29 @@
-import { Locator, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
+import { WebActions } from '../functions/WebActions';// Adjust path as needed
 
 export class GradeSelectionPage {
-    private nextButton: Locator;
     private page: Page;
+    private webActions: WebActions;
 
     constructor(page: Page) {
         this.page = page;
-        this.nextButton = page.locator("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
+        this.webActions = new WebActions(page);
     }
 
-    async selectGrade(gradeSelectorPortal: { gradeLink: string },page: Page) {
-        // Wait until the next button is clickable
-        while (!(await this.nextButton.isEnabled())) {
-            await page.locator(gradeSelectorPortal.gradeLink).waitFor({ state: 'visible' });
-            await page.locator(gradeSelectorPortal.gradeLink).click();
+    async selectGrade(gradeSelectorPortal: { gradeLink: string }) {
+        const gradeLocator = this.page.locator(gradeSelectorPortal.gradeLink);
+        const nextButton = this.page.locator("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
+
+        while (!(await nextButton.isEnabled())) {
+            await gradeLocator.waitFor({ state: 'visible' });
+            await this.webActions.click(gradeSelectorPortal.gradeLink);
         }
+
         return this;
     }
 
-    async clickNextButton(){
-        await this.nextButton.click();
+    async clickNextButton() {
+        await this.webActions.click("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
     }
 }
 
