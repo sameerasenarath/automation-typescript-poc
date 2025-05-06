@@ -1,34 +1,27 @@
-import {test, expect,Locator,Page} from '@playwright/test';
-
+import { Page } from '@playwright/test';
+import { WebActions } from '../functions/WebActions';// Adjust path as needed
 
 export class LoginPage {
-    signInbutton : Locator;
-    userName :Locator;
-    password : Locator;
-    page : Page;
+    private page: Page;
+    private webActions: WebActions;
 
-constructor(page:Page)
-{
-    this.page = page;
-    this.signInbutton= page.locator("[value='Login']");
-    this.userName = page.locator("#userEmail");
-    this.password = page.locator("#userPassword");
+    constructor(page: Page) {
+        this.page = page;
+        this.webActions = new WebActions(page);
+    }
 
+    async goTo() {
+        await this.webActions.goto("https://rahulshettyacademy.com/client");
+        await this.webActions.waitForLoadState('networkidle');
+    }
+
+    async validLogin(username: string, password: string) {
+        await this.webActions.type('#userEmail', username);
+        await this.webActions.type('#userPassword', password);
+        await this.webActions.click("[value='Login']");
+        await this.webActions.waitForLoadState('networkidle');
+    }
 }
 
-async goTo()
-{
-    await this.page.goto("https://rahulshettyacademy.com/client");
-}
+module.exports = { LoginPage };
 
-async validLogin(username:string,password:string)
-{
-    await  this.userName.fill(username);
-     await this.password.fill(password);
-     await this.signInbutton.click();
-     await this.page.waitForLoadState('networkidle');
-
-}
-
-}
-module.exports = {LoginPage};

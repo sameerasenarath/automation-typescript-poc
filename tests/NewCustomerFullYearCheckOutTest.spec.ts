@@ -63,6 +63,7 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
         await checkOutParentDetailsPage.goTo();
         await checkOutParentDetailsPage.fillParentFirstName(data[0].parentFirstName);
         parentEmail = data[0].parentEmail.replace('%s', generateRandomString(4));
+        console.log("URL ::: >>> "+parentEmail);
         await checkOutParentDetailsPage.fillParentEmail(parentEmail);
         await checkOutParentDetailsPage.selectNewsletterSubscription();
         checkOutUserStateSelectionPage = await checkOutParentDetailsPage.clickNextButton();
@@ -77,7 +78,7 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
     })
 
     await test.step("Select Grade and navigate to membership selection page", async () => {
-        await gradeSelectionPage.selectGrade(GradeSelectorPortalMap.GRADE_1, page);
+        await gradeSelectionPage.selectGrade(GradeSelectorPortalMap.GRADE_1);
         membershipSelectionPage = await gradeSelectionPage.clickNextButton();
 
     })
@@ -112,7 +113,7 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
         await expect(parentEmailVisible).toBeTruthy();
         })
 
-        await test.step("Fetch the enrolment link and navigate to enrolment page", async () => {
+    await test.step("Fetch the enrolment link and navigate to enrolment page", async () => {
             const URL = await ExtractEmails.extractEnrolmentUrl(parentEmail)
 
             //console.log("MailBODY ::: >>> "+mailBody);
@@ -121,7 +122,6 @@ test(`newUserCheckoutFlowTest`, async ({}) => {
             await enrolmentHomePage.goTo(URL)
 
         })
-
 
 });
 

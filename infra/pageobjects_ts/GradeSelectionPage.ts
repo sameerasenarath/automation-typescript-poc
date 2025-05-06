@@ -1,27 +1,31 @@
 import { Locator, Page } from '@playwright/test';
 import { POManager } from './POManager';
 import MembershipSelectionPage from './MembershipSelectionPage';
+import { WebActions } from '../functions/WebActions';// Adjust path as needed
 
 export class GradeSelectionPage {
-    private nextButton: Locator;
     private page: Page;
+    private webActions: WebActions;
 
     constructor(page: Page, private poManager: POManager) {
         this.page = page;
-        this.nextButton = page.locator("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
+        this.webActions = new WebActions(page);
     }
 
-    async selectGrade(gradeSelectorPortal: { gradeLink: string },page: Page) {
-        // Wait until the next button is clickable
-        while (!(await this.nextButton.isEnabled())) {
-            await page.locator(gradeSelectorPortal.gradeLink).waitFor({ state: 'visible' });
-            await page.locator(gradeSelectorPortal.gradeLink).click();
+    async selectGrade(gradeSelectorPortal: { gradeLink: string }) {
+        const gradeLocator = this.page.locator(gradeSelectorPortal.gradeLink);
+        const nextButton = this.page.locator("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
+
+        while (!(await nextButton.isEnabled())) {
+            await gradeLocator.waitFor({ state: 'visible' });
+            await this.webActions.click(gradeSelectorPortal.gradeLink);
         }
+
         return this;
     }
 
     async clickNextButton(): Promise<MembershipSelectionPage> {
-        await this.nextButton.click();
+        await this.webActions.click("button[data-tracking-id='AgeGroupContainer.Button.goNextFromProductFamilySelectPage']");
         return this.poManager.getMembershipSelectionPage();
     }
 }
