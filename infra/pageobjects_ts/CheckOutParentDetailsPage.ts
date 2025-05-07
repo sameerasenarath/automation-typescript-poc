@@ -33,7 +33,7 @@ export class CheckOutParentDetailsPage {
         this.localeSelectorText = page.locator("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal']/p[2]");
         this.changeLanguageDropdownText = page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
     }
-
+    
     async goTo(): Promise<void> {
         await this.webActions.goto(config[0].portalCheckoutUrl);
     }
