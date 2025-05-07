@@ -2,6 +2,10 @@ import {FrameLocator, Locator, Page} from '@playwright/test';
 import { GradeSelectorPortalMap } from '../eukaObjectsFactory/GradeSelectorPortal'; // Assuming GradeSelectorPortal is defined elsewhere
 import { POManager } from './POManager';
 import PaymentSuccessPage from './PaymentSuccessPage';
+import { UserCheckoutFlows } from '../eukaObjectsFactory/enum/UserCheckoutFlows';
+import { EukaCountryStates } from '../eukaObjectsFactory/enum/EukaCountryState';
+import { WebActions } from '../functions/WebActions';
+
 //import { LocaleSlug, EukaCountryState, UserCheckoutFlows } from './config'; // Assuming these are defined elsewhere
 //import { PaymentSuccessPage } from './PaymentSuccessPage'; // Assuming these pages are defined elsewhere
 // import { ParentPortalParentDashboardPage } from './ParentPortalParentDashboardPage';
@@ -12,6 +16,7 @@ import PaymentSuccessPage from './PaymentSuccessPage';
 
 export class PaymentPage {
     private page: Page;
+    private webActions: WebActions;
 
     // Locators
     private paymentPageHeader: Locator;
@@ -42,7 +47,7 @@ export class PaymentPage {
 
     constructor(page: Page, private ppoManager: POManager) { // Assuming POManager is defined elsewhere
         this.page = page;
-
+        this.webActions = new WebActions(page);
         // Initialize locators using CSS selectors
         this.paymentPageHeader = page.locator('div[data-tracking-id="PaymentDetailsContainer.Button.goBackFromPaymentPage"] + p');
         this.totalCostElement = page.locator('p[data-tracking-id="PaymentDetailsContainer.Text.totalAmount"]');
@@ -155,10 +160,10 @@ export class PaymentPage {
         return this;
     }
 
-    async selectState(): Promise<this> {
-        const searchedState = `div[data-tracking-id="Select.Option.${"New South Wales"}"]`;
+    async selectState(state: string): Promise<this> {
+        const searchedState = `div[data-tracking-id="Select.Option.${state}"]`;
         await this.stateSelectionDropdown.click();
-        await this.stateSelectionDropdown.type("New South Wales");
+        await this.stateSelectionDropdown.type(state);
         await this.page.locator(searchedState).waitFor({ state: 'visible' });
         await this.page.locator(searchedState).click();
         return this;
@@ -169,10 +174,10 @@ export class PaymentPage {
         return this;
     }
 
-    async selectCountryCode(): Promise<this> {
-        const searchedCountryCode = `div[data-tracking-id="Select.Option.AU"]`;
+    async selectCountryCode(countryCode: string): Promise<this> {
+        const searchedCountryCode = `div[data-tracking-id="Select.Option.${countryCode}"]`;
         await this.countryCodeSelectionDropdown.click();
-        await this.countryCodeSelectionDropdown.type("AU");
+        await this.countryCodeSelectionDropdown.type(countryCode);
         await this.page.locator(searchedCountryCode).waitFor({ state: 'visible' });
         await this.page.locator(searchedCountryCode).click();
         return this;
@@ -183,12 +188,16 @@ export class PaymentPage {
         return this;
     }
 
-    async clickPayButton(): Promise<PaymentSuccessPage> {
-        await this.page.waitForTimeout(2000); // Wait for 2 seconds to apply the coupon
-        await this.payButton.click();
-        await this.payButton.waitFor({ state: 'hidden', timeout: 90000 });
+    async clickPayButton(userCheckoutFlow: UserCheckoutFlows, isFromEcom: boolean): Promise<PaymentSuccessPage> {
+        await this.webActions.click(this.payButton); 
         return this.ppoManager.getPaymentSuccessPage();
-    }
+      }
+    // async clickPayButton(): Promise<PaymentSuccessPage> {
+    //     await this.page.waitForTimeout(2000); // Wait for 2 seconds to apply the coupon
+    //     await this.payButton.click();
+    //     await this.payButton.waitFor({ state: 'hidden', timeout: 90000 });
+    //     return this.ppoManager.getPaymentSuccessPage();
+    // }
 
     async selectExistingCard(): Promise<this> {
         await this.existingPaymentElement.click();
@@ -219,5 +228,29 @@ export class PaymentPage {
         const payButtonAmount = parseFloat(payButtonText!.match(/\d+\.?\d*/)![0]);
         return instalmentCost === payButtonAmount;
     }
+
+    async paymentWithCreditCard(
+        userCheckoutFlows: UserCheckoutFlows,
+        isFromEcom: boolean,
+        creditCardNo: string = '4111111111111111', // Default test card
+        locale: string = 'en-au' // Default locale slug
+      ): Promise<PaymentSuccessPage> {
+        await this.enterCCNumber(creditCardNo);
+        await this.enterCCExpiry("01/29"); 
+        await this.enterCCCVC('456');
+        await this.enterCCHolderName('Test user');
+        await this.selectCountry();
+        await this.enterAddressLine1('Test Address line 1/11');
+        await this.enterAddressLine2('Test Address line 2#34');
+        await this.enterCity(EukaCountryStates.NSW.capitalCity);
+        await this.selectState(EukaCountryStates.NSW.stateFullName);
+        await this.enterPostalCode('8347');
+        await this.selectCountryCode(EukaCountryStates.NSW.country);
+        await this.enterPhoneNumber("0707070707");
+        await this.checkTerms();
+        return await this.clickPayButton(userCheckoutFlows, isFromEcom);
+      }
+
+
 }
 export default PaymentPage;
