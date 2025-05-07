@@ -13,6 +13,10 @@ export class CheckOutParentDetailsPage {
     private localeSelector: Locator;
     private changeLanguageDropdown: Locator;
     private confirmLocaleButton: Locator;
+    private NewsletterSubscription: Locator;
+    private localeSelectorText: Locator;
+    private changeLanguageDropdownText: Locator;
+    private languageOptionSelector:Locator | undefined
     private page: Page;
     private webActions: WebActions;
 
@@ -27,7 +31,12 @@ constructor(page:Page, private poManager: POManager)
     this.localeSelector = page.locator("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal']/p[2]");
     this.changeLanguageDropdown= page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
     this.confirmLocaleButton = page.locator("button[data-tracking-id='LocationSelectDrawer.Button.confirm']");
+    this.NewsletterSubscription = page.locator("label[data-tracking-id='UserInfoContainer.Checkbox.checkNewsletterSubscription']>span:nth-of-type(1)");
+    this.localeSelectorText = page.locator("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal']/p[2]");
+    this.changeLanguageDropdownText= page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
+    
     }
+    
 
     async goTo() {
         await this.webActions.goto(config[0].portalCheckoutUrl);
@@ -42,26 +51,27 @@ constructor(page:Page, private poManager: POManager)
     }
 
     async selectNewsletterSubscription() {
-        await this.webActions.click("label[data-tracking-id='UserInfoContainer.Checkbox.checkNewsletterSubscription']>span:nth-of-type(1)");
+        await this.webActions.click(this.NewsletterSubscription);
     }
 
     async clickNextButton(): Promise<CheckOutUserStateSelectionPage> {
-        await this.webActions.click("button[data-tracking-id='UserInfoContainer.Button.goNext']");
+        await this.webActions.click(this.nextButton);
         return this.poManager.getCheckOutUserStateSelectionPage();
     }
 
     async clickOnLocaleSelector() {
-        await this.webActions.click("div[data-tracking-id='NavBar.NavItem.openLocaleSelectionModal'] > p:nth-of-type(2)");
+        await this.webActions.click(this.localeSelector);
     }
 
     async changeLanguage(locale: string) {
-        const languageOptionSelector = `//div[@data-tracking-id='Select.Option.${locale}']`;
-        await this.webActions.click("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
-        await this.webActions.click(languageOptionSelector);
+        this.languageOptionSelector = this.page.locator("//div[@data-tracking-id='Select.Option.${locale}']");
+       // languageOptionSelector = `//div[@data-tracking-id='Select.Option.${locale}']`;
+        await this.webActions.click(this.changeLanguageDropdownText);
+        await this.webActions.click(this.languageOptionSelector);
     }
 
     async clickConfirmLocaleButton() {
-        await this.webActions.click("button[data-tracking-id='LocationSelectDrawer.Button.confirm']");
+        await this.webActions.click(this.confirmLocaleButton);
     }
 }
 module.exports = {CheckOutParentDetailsPage};

@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class WebActions {
     readonly page: Page;
@@ -15,8 +15,8 @@ export class WebActions {
         await this.page.waitForLoadState(state);
     }
 
-    async click(selector: string) {
-        await this.page.locator(selector).click();
+    async click(locator: Locator) {
+        await locator.click();
     }
 
     async type(selector: string, text: string) {
@@ -27,8 +27,8 @@ export class WebActions {
         return await this.page.locator(selector).innerText();
     }
 
-    async waitForSelector(selector: string) {
-        await this.page.waitForSelector(selector);
+    async waitForSelector(locator: Locator) {
+        await locator.waitFor({ state: 'visible', timeout: 15000 });
     }
 
     async isVisible(selector: string): Promise<boolean> {
@@ -54,4 +54,13 @@ export class WebActions {
     async waitForTimeout(milliseconds: number) {
         await this.page.waitForTimeout(milliseconds);
     }
+
+    async isElementVisible(locator: Locator): Promise<boolean> {
+        try {
+          await locator.waitFor({ state: 'visible', timeout: 15000 });
+          return await locator.isVisible();
+        } catch {
+          return false;
+        }
+      }
 }

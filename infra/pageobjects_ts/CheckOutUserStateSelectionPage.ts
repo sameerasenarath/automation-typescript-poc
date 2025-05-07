@@ -2,11 +2,14 @@ import { Locator, Page } from '@playwright/test';
 import GradeSelectionPage from './GradeSelectionPage';
 import { POManager } from './POManager';
 import SelectPremiumServicePage from './SelectPremiumServicePage';
-import { WebActions } from '../functions/WebActions'; 
+import { WebActions } from '../functions/WebActions';
 
 export class CheckOutUserStateSelectionPage {
     private page: Page;
     private webActions: WebActions;
+    private countrySelector!: Locator;
+    private stateSelector!: Locator;
+    private nextButton!: Locator;
 
 
     constructor(page: Page, private poManager: POManager) {
@@ -15,18 +18,18 @@ export class CheckOutUserStateSelectionPage {
     }
 
     async selectCountry(countryCode: string): Promise<this> {
-        const countrySelector =
+        this.countrySelector =
             countryCode === 'AU'
-                ? "button[data-tracking-id='StateContainer.Button.countryAU']"
-                : "button[data-tracking-id='StateContainer.Button.countryinternational']";
+                ? this.page.locator("button[data-tracking-id='StateContainer.Button.countryAU']")
+                : this.page.locator("button[data-tracking-id='StateContainer.Button.countryinternational']");
 
-        await this.page.locator(countrySelector).waitFor({ state: 'visible' });
-        await this.webActions.click(countrySelector);
+        await this.countrySelector.waitFor({ state: 'visible' });
+        await this.webActions.click(this.countrySelector);
         return this;
     }
 
     async selectState(stateShortName: string): Promise<this> {
-        const stateSelector = `button[data-tracking-id='StateContainer.Button.state${stateShortName}']`;
+        const stateSelector = this.page.locator(`button[data-tracking-id='StateContainer.Button.state${stateShortName}']`);
         await this.webActions.click(stateSelector);
         return this;
     }
@@ -37,10 +40,11 @@ export class CheckOutUserStateSelectionPage {
 
     // Single implementation handling both overloads
     async clickNextButton(isAddServiceFlow: boolean = false): Promise<GradeSelectionPage | SelectPremiumServicePage> {
-        await this.webActions.click("button[data-tracking-id='StateContainer.Button.goNextFromStateSelectPage']");
+        this.nextButton = this.page.locator("button[data-tracking-id='StateContainer.Button.goNextFromStateSelectPage']");
+        await this.webActions.click(this.nextButton);
 
         if (isAddServiceFlow) {
-            return new SelectPremiumServicePage(this.page,this.poManager);
+            return new SelectPremiumServicePage(this.page, this.poManager);
         } else {
             return new GradeSelectionPage(this.page, this.poManager);
         }
