@@ -1,11 +1,11 @@
-enum PaymentPlans {
+export enum PaymentPlans {
     SINGLE_TERM = "SINGLE_TERM",
     FULL_YEAR = "FULL_YEAR",
     INSTALLMENTS = "INSTALLMENTS",
     NONE = "NONE",
 }
 
-class PaymentPlanDetails {
+export class PaymentPlanDetails {
     licenseValidityInMonths: number;
     enrolmentText: string;
 
@@ -15,7 +15,7 @@ class PaymentPlanDetails {
     }
 }
 
-const PaymentPlansMap: { [key in PaymentPlans]: PaymentPlanDetails } = {
+export const PaymentPlansMap: { [key in PaymentPlans]: PaymentPlanDetails } = {
     [PaymentPlans.SINGLE_TERM]: new PaymentPlanDetails(3, "Term Enrolment"),
     [PaymentPlans.FULL_YEAR]: new PaymentPlanDetails(12, "Yearly Enrolment"),
     [PaymentPlans.INSTALLMENTS]: new PaymentPlanDetails(3, "Yearly Enrolment"),
