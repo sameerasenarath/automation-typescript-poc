@@ -63,4 +63,46 @@ export class WebActions {
           return false;
         }
       }
+
+      async typeOnElement(locator: Locator, textToType: string): Promise<void> {
+        await this.typeOnElementWithOption(locator, textToType, false);
+      }
+    
+      async typeOnElementWithOption(locator: Locator, textToType: string, typeSequentially: boolean): Promise<void> {
+        await this.page.waitForLoadState('load', { timeout: 30000 });
+    
+        if (typeSequentially) {
+          await locator.waitFor({ state: 'visible' });
+          await locator.pressSequentially(textToType);
+        } else {
+          await locator.fill(textToType);
+        }
+      }
+
+      async clickRandomFromDropDown(dropdownLocator: Locator, optionsLocator: Locator): Promise<void> {
+        await dropdownLocator.click();
+    
+        const count = await optionsLocator.count();
+        const randomIndex = Math.floor(Math.random() * count);
+    
+        console.log(`Selecting ${randomIndex}th item from dropdown`);
+    
+        await optionsLocator.nth(randomIndex).click();
+      }
+
+      async clickOptionByVisibleText(dropDownLocator: Locator, availableOptions: Locator, textToSelect: string): Promise<void> {
+        await dropDownLocator.click();
+      
+        const optionCount = await availableOptions.count();
+      
+        for (let i = 0; i < optionCount; i++) {
+          const option = availableOptions.nth(i);
+          const text = await option.textContent();
+      
+          if (text?.trim() === textToSelect) {
+            await option.click();
+            break;
+          }
+        }
+      }
 }
