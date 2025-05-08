@@ -20,6 +20,9 @@ import EnrolmentStudentInfoPage from '../../../infra/pageobjects_ts/EnrolmentStu
 import EnrolmentStudentPerformancePage from '../../../infra/pageobjects_ts/EnrolmentStudentPerformancePage';
 import { PaymentPlans } from '../../../infra/eukaObjectsFactory/PaymentPlans';
 import EnrolmentSuccessPage from '../../../infra/pageobjects_ts/EnrolmentSuccessPage';
+import ParentPortalParentDashboardPage from '../../../infra/pageobjects_ts/ParentPortalParentDashboardPage';
+import ParentPortalManageProgramsPage from '../../../infra/pageobjects_ts/ParentPortalManageProgramsPage';
+import ParentPortalStudentDetailsPage from '../../../infra/pageobjects_ts/ParentPortalStudentDetailsPage';
 
 const data = JSON.parse(JSON.stringify(require("../../../utils/testData/newCustomerFullYearCheckOutTestData.json")));
 
@@ -44,6 +47,9 @@ test(`dataPreparationForNotification`, async ({ page }) => {
   let enrolmentStudentInfoPage: EnrolmentStudentInfoPage;
   let enrolmentStudentPerformancePage: EnrolmentStudentPerformancePage;
   let enrolmentSuccessPage: EnrolmentSuccessPage;
+  let parentPortalParentDashboardPage: ParentPortalParentDashboardPage;
+  let parentPortalManageProgramsPage: ParentPortalManageProgramsPage;
+  let parentPortalStudentDetailsPage: ParentPortalStudentDetailsPage;
 
   await test.step("Step 1 - Fill Parent details and Navigate to country and state selection page", async () => {
     const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage();
@@ -97,7 +103,7 @@ test(`dataPreparationForNotification`, async ({ page }) => {
   })
 
   await test.step("Step 8 - Fill parent details and goto set password page", async () => {
-    await enrolmentParentDetailsPage.enterParentDetails("AutomationTEST","Parent");
+    await enrolmentParentDetailsPage.enterParentDetails("AutomationTEST", "Parent");
     await enrolmentParentDetailsPage.selectReason()
     await enrolmentParentDetailsPage.selectFindEukaReason()
     enrolmentCreatePasswordPage = await enrolmentParentDetailsPage.clickNextButton();
@@ -121,5 +127,25 @@ test(`dataPreparationForNotification`, async ({ page }) => {
     await enrolmentStudentInfoPage.selectTerm("Term 2");
     enrolmentStudentPerformancePage = await enrolmentStudentInfoPage.clickNextButton();
     enrolmentSuccessPage = await enrolmentStudentPerformancePage.clickNextButton();
+  })
+
+  await test.step("Step 12 - Verify student and grades in the success page and navigate to parent portal", async () => {
+    parentPortalParentDashboardPage = await enrolmentSuccessPage.clickGoToParentPortal();
+  })
+
+
+  await test.step("Step 13 - Go to manage programs page", async () => {
+    parentPortalManageProgramsPage = await parentPortalParentDashboardPage.clickManagePrograms();
+  })
+
+  await test.step("Step 14 - Go to student details page", async () => {
+    parentPortalStudentDetailsPage = await parentPortalManageProgramsPage.clickOnStudentSection("AutomationTEST");
+  })
+
+  await test.step("Step 15 - Cancel the program auto-renewal", async () => {
+    await parentPortalStudentDetailsPage.clickOnManageLink();
+    await parentPortalStudentDetailsPage.clickCancelProgramRenewal();
+    await parentPortalStudentDetailsPage.cancelProgramRenewal();
+    await parentPortalStudentDetailsPage.waitUntilReady();
   })
 });
