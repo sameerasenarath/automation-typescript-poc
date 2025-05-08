@@ -1,0 +1,5 @@
+[
+    { "email": "kaveesh.g+POC_teT8@euka.edu.au", "password": "Test@123" },
+    { "email": "validuser2@example.com", "password": "SecurePass456" },
+    { "email": "validuser3@example.com", "password": "AnotherPass789" }
+]

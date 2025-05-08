@@ -6,7 +6,6 @@ import MembershipSelectionPage from "./MembershipSelectionPage";
 import selectPremiumServicePage from "./SelectPremiumServicePage";
 import PaymentPage from "./PaymentPage";
 import paymentSuccessPage from "./PaymentSuccessPage";
-import enrolmentHomePage from "./EnrolmentHomePage";
 import EnrolmentParentDetailsPage from './EnrolmentParentDetailsPage';
 import EnrolmentCreatePasswordPage from './EnrolmentCreatePasswordPage';
 import EnrolmentStudentDetailsPage from './EnrolmentStudentDetailsPage';
@@ -17,9 +16,13 @@ import EnrolmentStudentInfoPage from './EnrolmentStudentInfoPage';
 import EnrolmentStudentPerformancePage from './EnrolmentStudentPerformancePage';
 import EnrolmentSeniorGradeSubjectSelectionPage from './EnrolmentSeniorGradeSubjectSelectionPage';
 import EnrolmentSuccessPage from './EnrolmentSuccessPage';
+import {LoginPage} from "./LoginPage";
+import {DashboardPage} from "./DashboardPage";
 
 export class POManager {
     page: Page;
+    dashboardPage: DashboardPage;
+    loginPage: LoginPage;
     checkOutParentDetailsPage: CheckOutParentDetailsPage;
     gradeSelectionPage: GradeSelectionPage;
     checkOutUserStateSelectionPage: CheckOutUserStateSelectionPage;
@@ -40,6 +43,8 @@ export class POManager {
 
     constructor(page: Page) {
         this.page = page;
+        this.dashboardPage = new DashboardPage(this.page, this);
+        this.loginPage = new LoginPage(this.page, this);
         this.checkOutUserStateSelectionPage = new CheckOutUserStateSelectionPage(this.page, this);
         this.checkOutParentDetailsPage = new CheckOutParentDetailsPage(this.page, this);
         this.gradeSelectionPage = new GradeSelectionPage(this.page, this);
@@ -61,6 +66,14 @@ export class POManager {
 
     getCheckOutParentDetailsPage() {
         return this.checkOutParentDetailsPage;
+    }
+
+    getDashboardPage() {
+        return this.dashboardPage;
+    }
+
+    getLoginPage() {
+        return this.loginPage;
     }
 
     getGradeSelectionPage() {

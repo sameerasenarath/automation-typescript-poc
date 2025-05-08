@@ -19,8 +19,12 @@ export class WebActions {
         await locator.click();
     }
 
-    async type(selector: string, text: string) {
-        await this.page.locator(selector).fill(text);
+    async type(target: string | Locator, text: string): Promise<void> {
+        if (typeof target === 'string') {
+            await this.page.locator(target).fill(text);
+        } else {
+            await target.fill(text);
+        }
     }
 
     async getText(selector: string): Promise<string> {

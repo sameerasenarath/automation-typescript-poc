@@ -33,7 +33,7 @@ const config = {
   projects: [
     {
       name: 'smoke-tests',
-      testMatch: ['tests/NewCustomerFullYearCheckOutTest.spec.ts'], //
+      testMatch: ['tests/*.spec.ts'], //
       video:'retain-on-failure',
       headless : false,
       screenshot : 'on',// Run only smoke test files

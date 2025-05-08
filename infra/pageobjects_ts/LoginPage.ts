@@ -1,29 +1,36 @@
 import { Locator, Page } from '@playwright/test';
-import { WebActions } from '../functions/WebActions';// Adjust path as needed
+import { WebActions } from '../functions/WebActions';
+import { POManager } from './POManager'; // Adjust path as needed
+const config = require("../../utils/config/MainConfig.json");
 
 export class LoginPage {
+    private emailInput: Locator;
+    private passwordInput: Locator;
+    private loginButton: Locator;
     private page: Page;
     private webActions: WebActions;
-    private loginButton: Locator;
 
-    constructor(page: Page) {
+    constructor(page: Page, private poManager: POManager) {
         this.page = page;
         this.webActions = new WebActions(page);
-        this.loginButton = this.page.locator("[value='Login']");
+
+        this.emailInput = page.locator("input[data-tracking-id='LoginContainer.FormField.Input.usernameInput']");
+        this.passwordInput = page.locator("input[data-testid='password']");
+        this.loginButton = page.locator("button[data-tracking-id='LoginContainer.Button.logIn']");
     }
 
-    async goTo() {
-        await this.webActions.goto("https://rahulshettyacademy.com/client");
+    async navigateToLoginPage() {
+        await this.webActions.goto(config[0].parentPortalUrl);
         await this.webActions.waitForLoadState('networkidle');
     }
 
-    async validLogin(username: string, password: string) {
-        await this.webActions.type('#userEmail', username);
-        await this.webActions.type('#userPassword', password);
+    async performLoginWithValidCredentials(username: string, password: string)   {
+        await this.webActions.type(this.emailInput, username);
+        await this.webActions.type(this.passwordInput, password);
         await this.webActions.click(this.loginButton);
         await this.webActions.waitForLoadState('networkidle');
+        return this.poManager.getDashboardPage();
     }
 }
 
 module.exports = { LoginPage };
-
