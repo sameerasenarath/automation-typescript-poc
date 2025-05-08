@@ -1,29 +1,29 @@
 import { test, expect, BrowserContext, chromium, Page } from '@playwright/test';
 
-import { POManager } from '../infra/pageobjects_ts/POManager';
-import generateRandomString from "../infra/functions/generateRandomString";
-import { GradeSelectorPortal, GradeSelectorPortalMap } from "../infra/eukaObjectsFactory/GradeSelectorPortal";
-import { Mail } from "../infra/functions/Mail";
-import { ExtractEmails } from "../infra/functions/ExtractEmails";
-import CheckOutUserStateSelectionPage from "../infra/pageobjects_ts/CheckOutUserStateSelectionPage";
-import GradeSelectionPage from '../infra/pageobjects_ts/GradeSelectionPage';
-import MembershipSelectionPage from '../infra/pageobjects_ts/MembershipSelectionPage';
-import SelectPremiumServicePage from '../infra/pageobjects_ts/SelectPremiumServicePage';
-import PaymentPage from '../infra/pageobjects_ts/PaymentPage';
-import PaymentSuccessPage from '../infra/pageobjects_ts/PaymentSuccessPage';
-import { EukaCountryStates } from '../infra/eukaObjectsFactory/enum/EukaCountryState';
-import { UserCheckoutFlows } from '../infra/eukaObjectsFactory/enum/UserCheckoutFlows';
-import {PaymentPlans} from "../infra/eukaObjectsFactory/PaymentPlans";
-import EnrolmentStudentInfoPage from "../infra/pageobjects_ts/EnrolmentStudentInfoPage";
-import EnrolmentParentDetailsPage from "../infra/pageobjects_ts/EnrolmentParentDetailsPage";
-import EnrolmentCreatePasswordPage from "../infra/pageobjects_ts/EnrolmentCreatePasswordPage";
-import EnrolmentStudentDetailsPage from "../infra/pageobjects_ts/EnrolmentStudentDetailsPage";
-import EnrolmentSelectProgramPage from "../infra/pageobjects_ts/EnrolmentSelectProgramPage";
-import EnrolmentStudentPerformancePage from "../infra/pageobjects_ts/EnrolmentStudentPerformancePage";
-import EnrolmentSuccessPage from "../infra/pageobjects_ts/EnrolmentSuccessPage";
+import { POManager } from '../../infra/pageobjects_ts/POManager';
+import generateRandomString from "../../infra/functions/generateRandomString";
+import { GradeSelectorPortal, GradeSelectorPortalMap } from "../../infra/eukaObjectsFactory/GradeSelectorPortal";
+import { Mail } from "../../infra/functions/Mail";
+import { ExtractEmails } from "../../infra/functions/ExtractEmails";
+import CheckOutUserStateSelectionPage from "../../infra/pageobjects_ts/CheckOutUserStateSelectionPage";
+import GradeSelectionPage from '../../infra/pageobjects_ts/GradeSelectionPage';
+import MembershipSelectionPage from '../../infra/pageobjects_ts/MembershipSelectionPage';
+import SelectPremiumServicePage from '../../infra/pageobjects_ts/SelectPremiumServicePage';
+import PaymentPage from '../../infra/pageobjects_ts/PaymentPage';
+import PaymentSuccessPage from '../../infra/pageobjects_ts/PaymentSuccessPage';
+import { EukaCountryStates } from '../../infra/eukaObjectsFactory/enum/EukaCountryState';
+import { UserCheckoutFlows } from '../../infra/eukaObjectsFactory/enum/UserCheckoutFlows';
+import {PaymentPlans} from "../../infra/eukaObjectsFactory/PaymentPlans";
+import EnrolmentStudentInfoPage from "../../infra/pageobjects_ts/EnrolmentStudentInfoPage";
+import EnrolmentParentDetailsPage from "../../infra/pageobjects_ts/EnrolmentParentDetailsPage";
+import EnrolmentCreatePasswordPage from "../../infra/pageobjects_ts/EnrolmentCreatePasswordPage";
+import EnrolmentStudentDetailsPage from "../../infra/pageobjects_ts/EnrolmentStudentDetailsPage";
+import EnrolmentSelectProgramPage from "../../infra/pageobjects_ts/EnrolmentSelectProgramPage";
+import EnrolmentStudentPerformancePage from "../../infra/pageobjects_ts/EnrolmentStudentPerformancePage";
+import EnrolmentSuccessPage from "../../infra/pageobjects_ts/EnrolmentSuccessPage";
 
 //Json->string->js object
-const data = JSON.parse(JSON.stringify(require("../utils/testData/newCustomerFullYearCheckOutTestData.json")));
+const data = JSON.parse(JSON.stringify(require("../../utils/testData/newCustomerFullYearCheckOutTestData.json")));
 let webContext: BrowserContext;
 let poManager: POManager;
 let parentEmail: string;
@@ -48,7 +48,7 @@ test.afterAll(async ({ }, testInfo) => {
 });
 
 
-test(`newUserCheckoutFlowTest`, async ({ }) => {
+test(`generalDataPreparationTest`, async ({ }) => {
     page = await webContext.newPage();
     let checkOutUserStateSelectionPage: CheckOutUserStateSelectionPage;
     let gradeSelectionPage: GradeSelectionPage;
