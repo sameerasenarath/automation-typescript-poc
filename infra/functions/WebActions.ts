@@ -105,4 +105,15 @@ export class WebActions {
           }
         }
       }
+
+      async waitForElementVisibility(elementLocator: Locator, timeout: number): Promise<void> {
+        await elementLocator.waitFor({ state: 'visible', timeout });
+      }
+
+      async waitForElementInvisibility(elementLocator: Locator, timeout: number = 15000): Promise<void> {
+        await elementLocator.waitFor({
+          state: 'hidden',
+          timeout: timeout,
+        });
+      }
 }
