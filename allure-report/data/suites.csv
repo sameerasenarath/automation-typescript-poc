@@ -1,2 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","44762","newUserCheckoutFlowTest","smoke-tests","Tue May 06 14:21:28 IST 2025","failed","Tue May 06 14:22:13 IST 2025","","NewCustomerFullYearCheckOutTest.spec.ts","",""
