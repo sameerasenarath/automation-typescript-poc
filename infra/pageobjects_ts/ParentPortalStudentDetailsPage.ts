@@ -57,7 +57,6 @@ export default class ParentPortalStudentDetailsPage {
           this.selectReasonDropdown,
           this.cancelProgramReasons
         );
-    
         await this.webActions.click(this.cancelProgramConfirmButton);
         await this.webActions.waitForElementInvisibility(this.cancelProgramRenewalPopup, 30000);
         return this;
