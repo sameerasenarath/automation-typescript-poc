@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { test } from '../../../utils/test-fixtures';
+import { test } from '../../../resources/test-fixtures';
 import { POManager } from '../../../infra/pageobjects_ts/POManager';
 import generateRandomString from '../../../infra/functions/generateRandomString';
 import CheckOutUserStateSelectionPage from '../../../infra/pageobjects_ts/CheckOutUserStateSelectionPage';
@@ -24,7 +24,7 @@ import ParentPortalParentDashboardPage from '../../../infra/pageobjects_ts/Paren
 import ParentPortalManageProgramsPage from '../../../infra/pageobjects_ts/ParentPortalManageProgramsPage';
 import ParentPortalStudentDetailsPage from '../../../infra/pageobjects_ts/ParentPortalStudentDetailsPage';
 
-const data = JSON.parse(JSON.stringify(require("../../../utils/testData/newCustomerFullYearCheckOutTestData.json")));
+const data = JSON.parse(JSON.stringify(require("../../../resources/testData/newCustomerFullYearCheckOutTestData.json")));
 
 let page: Page;
 let poManager: POManager;

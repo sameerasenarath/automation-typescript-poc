@@ -1,7 +1,7 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { WebActions } from '../functions/WebActions';
 import { POManager } from './POManager'; // Adjust path if needed
-const config = require("../../utils/config/MainConfig.json");
+const config = require("../../resources/config/MainConfig.json");
 
 export class DashboardPage {
     private switchToStudentPortalLink: Locator;

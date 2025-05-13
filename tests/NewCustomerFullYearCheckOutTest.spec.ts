@@ -1,5 +1,6 @@
 import { test, expect, BrowserContext, chromium, Page } from '@playwright/test';
-
+import { promises as fs } from 'fs';
+import path from 'path';
 import { POManager } from '../infra/pageobjects_ts/POManager';
 import generateRandomString from "../infra/functions/generateRandomString";
 import { GradeSelectorPortal, GradeSelectorPortalMap } from "../infra/eukaObjectsFactory/GradeSelectorPortal";
@@ -23,18 +24,31 @@ import EnrolmentStudentPerformancePage from "../infra/pageobjects_ts/EnrolmentSt
 import EnrolmentSuccessPage from "../infra/pageobjects_ts/EnrolmentSuccessPage";
 
 //Json->string->js object
-const data = JSON.parse(JSON.stringify(require("../utils/testData/newCustomerFullYearCheckOutTestData.json")));
+const data = JSON.parse(JSON.stringify(require("../resources/testData/newCustomerFullYearCheckOutTestData.json")));
 let webContext: BrowserContext;
 let poManager: POManager;
 let parentEmail: string;
 let page: Page;
 
 test.beforeAll(async ({ browser }) => {
+    // Delete all files in the videos directory
+    const videosDir = './report_data/videos/';
+    try {
+        const files = await fs.readdir(videosDir);
+        await Promise.all(files.map(file =>
+            fs.unlink(path.join(videosDir, file))
+        ));
+        console.log('All files in videos directory deleted successfully');
+    } catch (err) {
+        console.log('No files to delete or error cleaning videos directory:', err);
+    }
+
+    // Original setup code
     webContext = await browser.newContext({
-        storageState: './utils/sessionCookies/sessionInfo.json',
-        recordVideo: { dir: 'videos/' }
+        storageState: './resources/sessionCookies/sessionInfo.json',
+        recordVideo: { dir: 'report_data/videos/' }
     });
-})
+});
 
 test.afterAll(async ({ }, testInfo) => {
     // Attach video after test execution

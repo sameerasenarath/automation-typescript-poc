@@ -6,7 +6,7 @@
 import {POManager} from '../../infra/pageobjects_ts/POManager';
 
  //Json->string->js object
- const dataset =  JSON.parse(JSON.stringify(require("../utils/placeorderTestData.json")));
+ const dataset =  JSON.parse(JSON.stringify(require("../resources/placeorderTestData.json")));
 
  
 for(const data of dataset)

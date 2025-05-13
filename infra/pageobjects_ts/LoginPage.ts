@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { WebActions } from '../functions/WebActions';
 import { POManager } from './POManager'; // Adjust path as needed
-const config = require("../../utils/config/MainConfig.json");
+const config = require("../../resources/config/MainConfig.json");
 
 export class LoginPage {
     private emailInput: Locator;

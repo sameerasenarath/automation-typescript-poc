@@ -3,7 +3,7 @@ import { WebActions } from '../functions/WebActions';
 import { POManager } from './POManager';
 import ParentPortalManageProgramsPage from './ParentPortalManageProgramsPage';
 import ParentPortalParentDashboardPage from './ParentPortalParentDashboardPage';
-const config = require("../../utils/config/MainConfig.json");
+const config = require("../../resources/config/MainConfig.json");
 
 export default class ParentPortalLoginPage {
    

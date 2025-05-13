@@ -8,8 +8,8 @@ type TestFixtures = {
 export const test = base.extend<TestFixtures>({
   webContext: async ({ browser }, use) => {
     const context = await browser.newContext({
-      storageState: './utils/sessionCookies/sessionInfo.json',
-      recordVideo: { dir: 'videos/' },
+      storageState: './resources/sessionCookies/sessionInfo.json',
+      recordVideo: { dir: 'report_data/videos/' },
     });
     await use(context);
     await context.close();

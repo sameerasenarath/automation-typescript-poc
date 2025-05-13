@@ -23,7 +23,7 @@ import EnrolmentStudentPerformancePage from "../../infra/pageobjects_ts/Enrolmen
 import EnrolmentSuccessPage from "../../infra/pageobjects_ts/EnrolmentSuccessPage";
 
 //Json->string->js object
-const data = JSON.parse(JSON.stringify(require("../../utils/testData/newCustomerFullYearCheckOutTestData.json")));
+const data = JSON.parse(JSON.stringify(require("../../resources/testData/newCustomerFullYearCheckOutTestData.json")));
 let webContext: BrowserContext;
 let poManager: POManager;
 let parentEmail: string;
@@ -31,8 +31,8 @@ let page: Page;
 
 test.beforeAll(async ({ browser }) => {
     webContext = await browser.newContext({
-        storageState: './utils/sessionCookies/sessionInfo.json',
-        recordVideo: { dir: 'videos/' }
+        storageState: './resources/sessionCookies/sessionInfo.json',
+        recordVideo: { dir: 'report_data/videos/' }
     });
 })
 

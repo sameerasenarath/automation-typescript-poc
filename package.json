@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "testdb": " npx playwright test tests/NewCustomerFullYearCheckOutTest.spec.ts --headed && allure generate ./allure-results --clean && allure open ./allure-report",
+    "testdb": " npx playwright test tests/NewCustomerFullYearCheckOutTest.spec.ts --reporter=line,allure-playwright && allure generate ./allure-results --clean && allure open ./allure-report",
     "regression": "npx playwright test",
     "webTests": "npx playwright test --grep @Web",
     "APITests": "npx playwright test --grep @API",
     "SafariNewConfig": "npx playwright test --config playwright.config1.js --project=safari",
+    "allure:clean": " rm -rf allure-results && rm -rf allure-report",
+    "allure:report": "npm run allure:clean &&  allure generate ./allure-results && allure open ./allure-report",
     "CookiesSet": "npx playwright test tests/storeSessionInfo.spec.ts --headed; "
   },
   "keywords": [],
@@ -16,6 +18,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "*",
     "@playwright/test": "^1.51.1",
+    "allure": "^3.0.0-beta.12",
     "allure-playwright": "^2.15.1",
     "typescript": "^5.8.2"
   },

@@ -1,10 +1,10 @@
 /*
  const {test, expect} = require('@playwright/test');
- const {customtest} = require('../utils/test-base');
+ const {customtest} = require('../resources/test-base');
 
  const {POManager} = require('../pageobjects/POManager');
  //Json->string->js object
- const dataset =  JSON.parse(JSON.stringify(require("../utils/placeorderTestData.json")));
+ const dataset =  JSON.parse(JSON.stringify(require("../resources/placeorderTestData.json")));
 
  
 for(const data of dataset)
