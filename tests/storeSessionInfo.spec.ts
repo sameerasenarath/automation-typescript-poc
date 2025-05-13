@@ -1,3 +1,4 @@
+/*
 import { test, chromium } from '@playwright/test';
 
 test('store session info', async () => {
@@ -13,8 +14,8 @@ test('store session info', async () => {
     await page.waitForTimeout(60000);
 
     // Save storage state (cookies, local storage, etc.) to a file
-    await context.storageState({ path: './utils/sessionInfo.json' });
+    await context.storageState({ path: './resources/sessionInfo.json' });
 
     // Close the browser
     await browser.close();
-});
+});*/

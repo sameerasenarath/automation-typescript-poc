@@ -3,7 +3,7 @@ import { CheckOutUserStateSelectionPage } from './CheckOutUserStateSelectionPage
 import { POManager } from './POManager';
 import { WebActions } from '../functions/WebActions';
 
-const config = require("../../utils/config/MainConfig.json");
+const config = require("../../resources/config/MainConfig.json");
 
 export class CheckOutParentDetailsPage {
     private readonly parentFirstNameInput: Locator;
