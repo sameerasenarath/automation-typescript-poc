@@ -1,4 +1,4 @@
-enum EukaPremiumServices {
+export enum EukaPremiumServices {
     GOVERNMENT_REGISTRATION_REPORTING = "GOVERNMENT_REGISTRATION_REPORTING",
     GOVERNMENT_REGISTRATION = "GOVERNMENT_REGISTRATION",
     GOVERNMENT_REPORTING = "GOVERNMENT_REPORTING",
@@ -6,7 +6,7 @@ enum EukaPremiumServices {
     NOT_APPLICABLE = "NOT_APPLICABLE",
 }
 
-class EukaPremiumServicesDetails {
+export class EukaPremiumServicesDetails {
     premiumServiceTextInPortal: string;
     premiumServiceTextEnrolmentSuccess: string;
     premiumServiceShortName: string;
@@ -22,7 +22,7 @@ class EukaPremiumServicesDetails {
     }
 }
 
-const EukaPremiumServicesMap: { [key in EukaPremiumServices]: EukaPremiumServicesDetails } = {
+export const EukaPremiumServicesMap: { [key in EukaPremiumServices]: EukaPremiumServicesDetails } = {
     [EukaPremiumServices.GOVERNMENT_REGISTRATION_REPORTING]: new EukaPremiumServicesDetails(
         "Government Reporting and Government Registration Services",
         "Government Registration and Reporting - Bundle",

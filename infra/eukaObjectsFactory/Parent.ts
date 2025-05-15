@@ -1,52 +1,60 @@
-import config from '../../resources/config/MainConfig.json';
+import { GradeSelectorPortal } from "../eukaObjectsFactory/GradeSelectorPortal";
+import { PaymentPlans } from "../eukaObjectsFactory/PaymentPlans";
+import { EukaPremiumServices } from "../eukaObjectsFactory/EukaPremiumServices";
+import { LocaleSlug } from "../eukaObjectsFactory/LocaleSlugDetails";
+import { EukaDetails } from "../config/EukaDetails"; 
+import { RandomGenerator } from "../utils/RandomGenerator"; 
 
-class Parent {
-    parentID: string;
-    parentFirstName: string;
-    parentLastName: string;
-    parentEmail: string;
-    parentPassword: string;
-    checkoutGrade: GradeSelectorPortal | null;
-    checkoutPremiumService: EukaPremiumServices | null;
-    locale: LocaleSlug | null;
-    checkoutPaymentPlan: PaymentPlans | null;
+export class Parent {
+  parentID: string;
+  parentFirstName: string;
+  parentLastName: string;
+  parentEmail: string;
+  parentPassword: string;
+  checkoutGrade?: GradeSelectorPortal;
+  checkoutPremiumService?: EukaPremiumServices;
+  locale?: LocaleSlug;
+  checkoutPaymentPlan?: PaymentPlans;
 
-    // Default constructor
-    constructor();
-    // Constructor with basic details
-    constructor(firstName: string, lastName: string, email: string);
-    // Constructor with basic details, checkout grade, and payment plan
-    constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPaymentPlan: PaymentPlans);
-    // Constructor with basic details, checkout grade, payment plan, and premium service
-    constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPaymentPlan: PaymentPlans, checkoutPremiumService: EukaPremiumServices);
-    // Constructor with basic details, checkout grade, and premium service
-    //constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPremiumService: EukaPremiumServices);
-    // Constructor with basic details and password
-    //constructor(firstName: string, lastName: string, email: string, password: string);
-    // Constructor with basic details and checkout grade
-    constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal);
-    // Constructor with basic details, checkout grade, and locale
-    //constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, locale: LocaleSlug);*/
+  constructor();
+  constructor(firstName: string, lastName: string, email: string);
+  constructor(firstName: string, lastName: string, email: string, password: string);
+  constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal);
+  constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPaymentPlan: PaymentPlans);
+  constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPaymentPlan: PaymentPlans, checkoutPremiumService: EukaPremiumServices);
+  constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, checkoutPremiumService: EukaPremiumServices);
+  constructor(firstName: string, lastName: string, email: string, checkoutGrade: GradeSelectorPortal, locale: LocaleSlug);
+  constructor(
+    firstName?: string,
+    lastName?: string,
+    email?: string,
+    arg4?: GradeSelectorPortal | string,
+    arg5?: PaymentPlans | EukaPremiumServices | LocaleSlug,
+    arg6?: EukaPremiumServices
+  ) {
+    this.parentID = "";
+    this.parentFirstName = firstName ?? RandomGenerator.getParentFirstName();
+    this.parentLastName = lastName ?? RandomGenerator.getParentLastName();
+    this.parentEmail = email ?? RandomGenerator.generateRandomParentEmail();
+    this.parentPassword = typeof arg4 === "string" ? arg4 : EukaDetails.config.genericPassword;
 
-    // Main constructor implementation
-    constructor(
-        firstName?: string,
-        lastName?: string,
-        email?: string,
-        checkoutGrade?: GradeSelectorPortal,
-        checkoutPaymentPlan?: PaymentPlans,
-        checkoutPremiumService?: EukaPremiumServices,
-        locale?: LocaleSlug,
-        password?: string
-    ) {
-        this.parentID = "";
-        this.parentFirstName = firstName || "AutomationTEST";
-        this.parentLastName = lastName || "Parent";
-        this.parentEmail = email || config[0].gmailDomain;
-        this.parentPassword = password || "EukaAuto@123";
-        this.checkoutGrade = checkoutGrade || null;
-        this.checkoutPaymentPlan = checkoutPaymentPlan || null;
-        this.checkoutPremiumService = checkoutPremiumService || null;
-        this.locale = locale || null;
+    if (typeof arg4 !== "string") {
+      this.checkoutGrade = arg4;
     }
+
+    if (arg5 !== undefined) {
+      if (Object.values(PaymentPlans).includes(arg5 as PaymentPlans)) {
+        this.checkoutPaymentPlan = arg5 as PaymentPlans;
+      } else if (Object.values(EukaPremiumServices).includes(arg5 as EukaPremiumServices)) {
+        this.checkoutPremiumService = arg5 as EukaPremiumServices;
+      } else {
+        this.locale = arg5 as LocaleSlug;
+        this.checkoutPremiumService = undefined;
+      }
+    }
+
+    if (arg6 !== undefined) {
+      this.checkoutPremiumService = arg6;
+    }
+  }
 }
