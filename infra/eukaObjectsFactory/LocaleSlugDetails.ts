@@ -1,10 +1,10 @@
-enum LocaleSlug {
+export enum LocaleSlug {
     AUSTRALIA = "AUSTRALIA",
     VIETNAM_EN = "VIETNAM_EN",
     VIETNAM_VI = "VIETNAM_VI",
 }
 
-class LocaleSlugDetails {
+export class LocaleSlugDetails {
     countryCode: string;
     countryName: string;
     language: string;
@@ -18,14 +18,14 @@ class LocaleSlugDetails {
     }
 }
 
-const LocaleSlugMap: { [key in LocaleSlug]: LocaleSlugDetails } = {
+export const LocaleSlugMap: { [key in LocaleSlug]: LocaleSlugDetails } = {
     [LocaleSlug.AUSTRALIA]: new LocaleSlugDetails("AU", "Australia", "English", ""),
     [LocaleSlug.VIETNAM_EN]: new LocaleSlugDetails("VN", "Vietnam", "English", "payment-success-vn-en"),
     [LocaleSlug.VIETNAM_VI]: new LocaleSlugDetails("VN", "Vietnam", "Vietnamese / Tiếng Việt", "payment-success-vn-vi"),
 };
 
 // Function to convert a string to LocaleSlug
-function fromStringToSlug(inputStr: string): LocaleSlug | null {
+export function fromStringToSlug(inputStr: string): LocaleSlug | null {
     for (const localeSlug of Object.values(LocaleSlug)) {
         if (inputStr.toUpperCase() === localeSlug) {
             return localeSlug;

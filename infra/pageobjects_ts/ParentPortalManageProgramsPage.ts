@@ -16,7 +16,7 @@ export default class ParentPortalManageProgramsPage {
     }
 
     async clickOnStudentSection(studentFirstName: string): Promise<ParentPortalStudentDetailsPage> {
-        const studentNameLocator = this.page.locator(`//p[contains(text(),"${studentFirstName}")]/ancestor::a/div/div[1]/div[2]`);
+        const studentNameLocator = this.page.locator(`//p[contains(text(),"${studentFirstName}")]/ancestor::div[@role="group"]//span[@data-tracking-id="ManageProgramsContainer.Button.ChevronRightButton"]/*[name()="svg"]`);
         await Promise.all([
             await this.page.waitForLoadState('networkidle'),
             await studentNameLocator.waitFor({ state: 'visible', timeout: 60000 }),

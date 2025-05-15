@@ -2,8 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { CheckOutUserStateSelectionPage } from './CheckOutUserStateSelectionPage';
 import { POManager } from './POManager';
 import { WebActions } from '../functions/WebActions';
-
-const config = require("../../resources/config/MainConfig.json");
+import { MainConfig } from '../../infra/config/MainConfig';
 
 export class CheckOutParentDetailsPage {
     private readonly parentFirstNameInput: Locator;
@@ -35,7 +34,7 @@ export class CheckOutParentDetailsPage {
     }
     
     async goTo(): Promise<void> {
-        await this.webActions.goto(config[0].portalCheckoutUrl);
+        await this.webActions.goto(MainConfig.config.portalCheckoutUrl);
     }
 
     async fillParentFirstName(firstName: string): Promise<void> {

@@ -50,6 +50,11 @@ const config = {
       name: 'data-prep-tests',
       testMatch: ['tests/dataPreparation/**/*.spec.ts'],
     }
+    ,
+    {
+      name: 'newUserCheckoutFlow',
+      testMatch: ['tests/newUserCheckOutFlow/directPortal/**/*.spec.ts'],
+    }
   ],
 
 

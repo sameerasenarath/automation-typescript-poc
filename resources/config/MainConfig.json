@@ -1,17 +1,15 @@
-[
-    {
-        "browserType": "chrome",
-        "device": "desktop",
-        "ecomSiteUrl": "https://ecom.staging.euka.edu.au/",
-        "lmsUrl": "https://learn.staging.euka.edu.au/",
-        "parentPortalUrl": "https://portal.rc.euka.edu.au/",
-        "portalCheckoutUrl": "https://portal.rc.euka.edu.au/checkout?selectedCountry=AU",
-        "headless": false,
-        "locale": "AUSTRALIA",
-        "isRunRemotely": false,
-        "gmailUsername": "anjula.w",
-        "gmailDomain": "@euka.edu.au",
-        "pageNavigationTimeOut": 60000,
-        "pageElementVisibleTimeOut": 60000
-    }
-]
+{
+    "browserType": "chrome",
+    "device": "desktop",
+    "ecomSiteUrl": "https://ecom.staging.euka.edu.au/",
+    "lmsUrl": "https://learn.staging.euka.edu.au/",
+    "parentPortalUrl": "https://portal.rc.euka.edu.au/",
+    "portalCheckoutUrl": "https://portal.rc.euka.edu.au/checkout?selectedCountry=AU",
+    "headless": false,
+    "locale": "AUSTRALIA",
+    "isRunRemotely": false,
+    "gmailUsername": "sameera.s",
+    "gmailDomain": "@euka.edu.au",
+    "pageNavigationTimeOut": 60000,
+    "pageElementVisibleTimeOut": 60000
+  }
