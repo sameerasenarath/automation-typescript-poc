@@ -4,7 +4,7 @@ import { EukaPremiumServices } from "../eukaObjectsFactory/EukaPremiumServices";
 import { LocaleSlug } from "../eukaObjectsFactory/LocaleSlugDetails";
 import { EukaDetails } from "../config/EukaDetails"; 
 import { RandomGenerator } from "../utils/RandomGenerator"; 
-
+//test
 export class Parent {
   parentID: string;
   parentFirstName: string;
