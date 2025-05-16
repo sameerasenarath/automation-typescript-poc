@@ -33,7 +33,7 @@ export class CheckOutParentDetailsPage {
         this.changeLanguageDropdownText = page.locator("(input[data-tracking-id='Select.selectOption']/parent::div)[2]");
     }
     
-    async goTo(): Promise<void> {
+    async navigateToCheckoutPage(): Promise<void> {
         await this.webActions.goto(MainConfig.config.portalCheckoutUrl);
     }
 

@@ -1,4 +1,4 @@
-import { GradeSelectorPortal } from "../eukaObjectsFactory/GradeSelectorPortal";
+import { GradeSelectorPortalMap , GradeSelectorPortal, GradeSelectorPortalDetails } from "../eukaObjectsFactory/GradeSelectorPortal";
 import { PaymentPlans } from "../eukaObjectsFactory/PaymentPlans";
 import { EukaPremiumServices } from "../eukaObjectsFactory/EukaPremiumServices";
 import { LocaleSlug } from "../eukaObjectsFactory/LocaleSlugDetails";
@@ -56,5 +56,12 @@ export class Parent {
     if (arg6 !== undefined) {
       this.checkoutPremiumService = arg6;
     }
+  }
+
+  get gradeDetails(): GradeSelectorPortalDetails | undefined {
+    if (this.checkoutGrade) {
+      return GradeSelectorPortalMap[this.checkoutGrade as keyof typeof GradeSelectorPortalMap];
+    }
+    return undefined;
   }
 }

@@ -1,7 +1,7 @@
-/*
-import { test, chromium } from '@playwright/test';
 
-test('store session info', async () => {
+/*import { test, chromium } from '@playwright/test';
+
+test.only('store session info', async () => {
     // Launch the browser
     const browser = await chromium.launch({ headless: false, channel: 'chrome' });
     const context = await browser.newContext();
@@ -14,7 +14,7 @@ test('store session info', async () => {
     await page.waitForTimeout(60000);
 
     // Save storage state (cookies, local storage, etc.) to a file
-    await context.storageState({ path: './resources/sessionInfo.json' });
+    await context.storageState({ path: './resources/sessionCookies/sessionInfo.json' });
 
     // Close the browser
     await browser.close();

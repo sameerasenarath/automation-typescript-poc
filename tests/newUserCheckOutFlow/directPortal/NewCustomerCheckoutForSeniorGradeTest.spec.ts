@@ -4,6 +4,9 @@ import { MainConfig } from '../../../infra/config/MainConfig';
 import { EukaDetails } from '../../../infra/config/EukaDetails';
 import { DateUtils } from '../../../infra/utils/DateUtils'; 
 import { POManager } from '../../../infra/pageobjects_ts/POManager';
+import { Parent } from "../../../infra/eukaObjectsFactory/Parent";
+import { RandomGenerator } from "../../../infra/utils/RandomGenerator"
+import { ReportLogger } from "../../../infra/utils/ReportLogger"
 import generateRandomString from '../../../infra/functions/generateRandomString';
 import CheckOutUserStateSelectionPage from '../../../infra/pageobjects_ts/CheckOutUserStateSelectionPage';
 import GradeSelectionPage from '../../../infra/pageobjects_ts/GradeSelectionPage';
@@ -26,6 +29,7 @@ import EnrolmentSuccessPage from '../../../infra/pageobjects_ts/EnrolmentSuccess
 import ParentPortalParentDashboardPage from '../../../infra/pageobjects_ts/ParentPortalParentDashboardPage';
 import ParentPortalManageProgramsPage from '../../../infra/pageobjects_ts/ParentPortalManageProgramsPage';
 import ParentPortalStudentDetailsPage from '../../../infra/pageobjects_ts/ParentPortalStudentDetailsPage';
+import { EukaPremiumServices } from '../../../infra/eukaObjectsFactory/EukaPremiumServices';
 
 const data = JSON.parse(JSON.stringify(require("../../../resources/testData/newCustomerFullYearCheckOutTestData.json")));
 
@@ -55,12 +59,21 @@ test(`dataPreparationForNotification`, async ({ page }) => {
   let parentPortalManageProgramsPage: ParentPortalManageProgramsPage;
   let parentPortalStudentDetailsPage: ParentPortalStudentDetailsPage;
 
+  const parentEmail = `${MainConfig.config.gmailUsername}${EukaDetails.config.markingPortalPrefix}${date}${MainConfig.config.gmailDomain}`;
+  const parent = new Parent(
+    RandomGenerator.getParentFirstName(),
+    RandomGenerator.getParentLastName(),
+    parentEmail,
+    GradeSelectorPortal.GRADE_11_UNIVERSITY_ASSESSED,
+    PaymentPlans.FULL_YEAR,
+    EukaPremiumServices.GOVERNMENT_REGISTRATION
+  );
+
   await test.step("Step 1 - Fill Parent details and Navigate to country and state selection page", async () => {
     const checkOutParentDetailsPage = poManager.getCheckOutParentDetailsPage();
-    await checkOutParentDetailsPage.goTo();
-    await checkOutParentDetailsPage.fillParentFirstName(EukaDetails.config.parentFirstName);
-    parentEmail = `${MainConfig.config.gmailUsername}${EukaDetails.config.markingPortalPrefix}${date}${MainConfig.config.gmailDomain}`;
-    await checkOutParentDetailsPage.fillParentEmail(parentEmail);
+    await checkOutParentDetailsPage.navigateToCheckoutPage();
+    await checkOutParentDetailsPage.fillParentFirstName(parent.parentFirstName);
+    await checkOutParentDetailsPage.fillParentEmail(ReportLogger.logAndReturn("Generated parent email", parent.parentEmail));
     await checkOutParentDetailsPage.selectNewsletterSubscription();
     checkOutUserStateSelectionPage = await checkOutParentDetailsPage.clickNextButton();
   });
@@ -73,8 +86,7 @@ test(`dataPreparationForNotification`, async ({ page }) => {
   })
 
   await test.step("Step 3 - Select grade and navigate to subject info page", async () => {
-    const gradeMap = GradeSelectorPortalMap(page); // Pass the Playwright Page instance
-    await gradeSelectionPage.selectGrade(gradeMap[GradeSelectorPortal.GRADE_5]);
+    await gradeSelectionPage.selectGrade(parent.gradeDetails!);
     membershipSelectionPage = await gradeSelectionPage.clickNextButton();
 
   })
